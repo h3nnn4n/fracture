@@ -1,8 +1,8 @@
-var manager;
 var lines = [];
 
 function setup() {
-  createCanvas(700, 600);
+  var canvas = createCanvas(700, 600);
+  place_canvas(canvas);
 
   background(color(255));
 
