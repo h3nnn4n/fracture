@@ -7,8 +7,6 @@ class Line {
 
     this.center = this.random_point();
 
-    this.draw_intersection(this.center, color(0, 0, 255));
-
     this.start_point = createVector();
     this.end_point = createVector();
 
@@ -38,8 +36,6 @@ class Line {
   }
 
   set_full_bounds() {
-    console.log('setting full bonds');
-
     this.start_point.x = this.bounds_start.x;
     this.start_point.y = this.value_at_point(this.bounds_start.x);
 
@@ -50,7 +46,6 @@ class Line {
   find_collisions() {
     for (var p in lines) {
       var intersection = this.intersection_with(lines[p]);
-      this.draw_intersection(intersection);
 
       if (this.start_point.x < intersection.x && intersection.x < this.center.x) {
         if (lines[p].contains_point(intersection)) {
@@ -86,36 +81,7 @@ class Line {
     );
   }
 
-  draw_intersection(pos, custom_color) {
-    return;
-
-    if (custom_color) {
-      stroke(custom_color);
-    } else {
-      stroke(color(0, 255, 0));
-    }
-
-    strokeWeight(1);
-
-    push();
-    translate(
-      width / 2,
-      height / 2
-    );
-
-    ellipse(
-      pos.x,
-      pos.y,
-      5
-    );
-
-    pop();
-  }
-
   render() {
-    console.log(this.start_point);
-    console.log(this.end_point);
-
     stroke(color(0, 0, 0));
     strokeWeight(2);
 
