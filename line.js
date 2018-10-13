@@ -92,17 +92,23 @@ class Line {
     for (var p in lines) {
       var intersection = this.intersection_with(lines[p]);
 
-      if (this.start_point.x < intersection.x && intersection.x < this.center.x) {
+      if (
+        (this.start_point.x <= intersection.x && intersection.x <= this.center.x) ||
+        (this.start_point.x >= intersection.x && intersection.x >= this.center.x)) {
         if (lines[p].contains_point(intersection)) {
           this.start_point.x = intersection.x;
           this.start_point.y = intersection.y;
         }
       }
 
-      if (this.end_point.x > intersection.x && intersection.x > this.center.x) {
+      if (
+        (this.end_point.x >= intersection.x && intersection.x >= this.center.x) ||
+        (this.end_point.x <= intersection.x && intersection.x <= this.center.x)) {
         if (lines[p].contains_point(intersection)) {
           this.end_point.x = intersection.x;
           this.end_point.y = intersection.y;
+
+          //this.render_intersection(intersection);
 
           this.active = false;
         }
@@ -111,7 +117,10 @@ class Line {
   }
 
   contains_point(pos) {
-    return (this.start_point.x < pos.x && this.end_point.x > pos.x);
+    return (
+      (this.start_point.x <= pos.x && this.end_point.x >= pos.x) ||
+      (this.start_point.x >= pos.x && this.end_point.x <= pos.x)
+    );
   }
 
   intersection_with(line) {
@@ -135,7 +144,7 @@ class Line {
       stroke(color(0, 0, 0));
     }
 
-    strokeWeight(2);
+    strokeWeight(1);
 
     push();
     translate(
@@ -161,6 +170,24 @@ class Line {
       //this.end_point.y,
       //5
     //);
+
+    pop();
+  }
+
+  render_intersection(pos) {
+    push();
+    translate(
+      width / 2,
+      height / 2
+    );
+
+    fill(color(255, 0, 0));
+    stroke(color(255, 0, 0));
+    ellipse(
+      pos.x,
+      pos.y,
+      2
+    );
 
     pop();
   }

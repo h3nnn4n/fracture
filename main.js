@@ -18,6 +18,11 @@ function draw_box() {
   line(width, 0, width, height);
   line(0, height, width, height);
 
+  //strokeWeight(0.5);
+
+  //line(0, height / 2, width, height / 2);
+  //line(width / 2, 0, width / 2, height);
+
   lines.push(new Line(0, 0, 25));
 }
 
@@ -26,9 +31,13 @@ function draw() {
     return;
   }
 
+  var changed = false;
+
   for (var p in lines) {
     if (lines[p].active) {
       lines[p].active = false;
+
+      changed = true;
 
       lines.push(
         new Line(
