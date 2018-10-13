@@ -1,19 +1,15 @@
 /*jshint esversion: 6 */
 
 class Line {
-  constructor(x, y, length) {
-    if (length < 1) {
+  constructor(params={}) {
+    this.set_mode(params);
+    this.set_params(params);
+
+    //debugger;
+
+    if (this.length < this.stop_length) {
       return;
     }
-
-    this.limited = !(x == null);
-    this.length = length;
-
-    this.start_point = createVector();
-    this.end_point = createVector();
-
-    this.linear_coef = random(-width / 2, width / 2);
-    this.angular_coef = randomGaussian(0, 2);
 
     this.center = this.random_point();
 
@@ -22,10 +18,12 @@ class Line {
 
     this.active = true;
 
-    if (this.limited) {
-      this.set_starting_point(x, y, length);
+    if (this.mode == 1) {
+      this.set_starting_point();
       this.update_coefs();
-    } else {
+    } else if (this.mode == 0) {
+      this.linear_coef = random(-width / 2, width / 2);
+      this.angular_coef = randomGaussian(0, 2);
       this.set_full_bounds();
     }
 
@@ -38,8 +36,47 @@ class Line {
     this.check_bounds();
   }
 
-  set_starting_point(x, y, length) {
-    if (x == null || y == null) {
+  set_mode(params) {
+    if (params.x1 && params.y1 && params.x2 && params.y2) {
+      console.log('fixed origin and end mode');
+      this.mode = 2;
+    } else if (params.x1 && params.y1) {
+      console.log('fixed origin and length mode');
+      this.mode = 1;
+    } else {
+      console.log('random mode');
+      this.mode = 0;
+    }
+  }
+
+  set_params(params) {
+    this.params = params;
+    this.stop_length = params.stop_length || 2.5;
+
+    this.length = params.length;
+    this.stop_length = params.stop_length || 5;
+
+    if (params.x1 && params.y1) {
+      this.start_point = createVector(
+        params.x1,
+        params.y1
+      );
+    } else {
+      this.start_point = createVector();
+    }
+
+    if (params.x2 && params.y2) {
+      this.end_point = createVector(
+        params.x2,
+        params.y2
+      );
+    } else {
+      this.end_point = createVector();
+    }
+  }
+
+  set_starting_point() {
+    if (this.mode != 1) {
       return;
     }
 
@@ -94,23 +131,23 @@ class Line {
     for (var p in lines) {
       var intersection = this.intersection_with(lines[p]);
 
-      if (
-        (this.start_point.x <= intersection.x && intersection.x <= this.center.x) ||
-        (this.start_point.x >= intersection.x && intersection.x >= this.center.x)) {
-        if (lines[p].contains_point(intersection)) {
-          this.start_point.x = intersection.x;
-          this.start_point.y = intersection.y;
-        }
-      }
+      //if (
+        //(this.start_point.x < intersection.x && intersection.x < this.center.x) ||
+        //(this.start_point.x > intersection.x && intersection.x > this.center.x)) {
+        //if (lines[p].contains_point(intersection)) {
+          //this.start_point.x = intersection.x;
+          //this.start_point.y = intersection.y;
+        //}
+      //}
 
       if (
-        (this.end_point.x >= intersection.x && intersection.x >= this.center.x) ||
-        (this.end_point.x <= intersection.x && intersection.x <= this.center.x)) {
+        (this.end_point.x > intersection.x && intersection.x > this.center.x) ||
+        (this.end_point.x < intersection.x && intersection.x < this.center.x)) {
         if (lines[p].contains_point(intersection)) {
           this.end_point.x = intersection.x;
           this.end_point.y = intersection.y;
 
-          //this.render_intersection(intersection);
+          this.render_intersection(intersection);
 
           this.active = false;
         }
@@ -143,7 +180,8 @@ class Line {
     if (custom_color) {
       stroke(custom_color);
     } else {
-      stroke(color(0, 0, 0));
+      //stroke(color(0, 0, 0));
+      stroke(color(0, 0, 0, 125));
     }
 
     strokeWeight(1);
