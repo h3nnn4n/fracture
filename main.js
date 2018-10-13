@@ -17,8 +17,46 @@ function draw_box() {
   line(0, 0, width, 0);
   line(width, 0, width, height);
   line(0, height, width, height);
+
+  lines.push(new Line(0, 0, 25));
 }
 
 function draw() {
-  lines.push(new Line());
+  if (lines.length > 2000) {
+    return;
+  }
+
+  for (var p in lines) {
+    if (lines[p].active) {
+      lines[p].active = false;
+
+      lines.push(
+        new Line(
+          lines[p].end_point.x,
+          lines[p].end_point.y,
+          random(
+            lines[p].length + 2.5,
+            lines[p].length - 5.0
+          )
+        )
+      );
+
+      continue;
+
+      if (random() > 0.5) {
+        continue;
+      }
+
+      lines.push(
+        new Line(
+          lines[p].end_point.x,
+          lines[p].end_point.y,
+          random(
+            lines[p].length + 2.5,
+            lines[p].length - 5.0
+          )
+        )
+      );
+    }
+  }
 }

@@ -1,25 +1,70 @@
 /*jshint esversion: 6 */
 
 class Line {
-  constructor() {
+  constructor(x, y, length) {
+    if (length < 1) {
+      return;
+    }
+
+    this.limited = !(x == null);
+    this.length = length;
+
+    this.start_point = createVector();
+    this.end_point = createVector();
+
     this.linear_coef = random(-width / 2, width / 2);
     this.angular_coef = randomGaussian(0, 2);
 
     this.center = this.random_point();
 
-    this.start_point = createVector();
-    this.end_point = createVector();
-
     this.bounds_start = createVector(-width / 2, -height / 2);
     this.bounds_end = createVector(width / 2, height / 2);
 
-    this.set_full_bounds();
+    this.active = true;
+
+    if (this.limited) {
+      this.set_starting_point(x, y, length);
+      this.update_coefs();
+    } else {
+      this.set_full_bounds();
+    }
 
     if (lines.length > 0) {
       this.find_collisions();
     }
 
     this.render();
+  }
+
+  set_starting_point(x, y, length) {
+    if (x == null || y == null) {
+      return;
+    }
+
+    this.start_point.x = x;
+    this.start_point.y = y;
+
+    var random_direction = p5.Vector.random2D();
+    random_direction.setMag(length);
+
+    this.end_point.set(p5.Vector.add(this.start_point, random_direction));
+
+    this.center.set(this.start_point);
+    this.center.lerp(this.end_point, 0.1);
+
+    //this.render(color(255, 0, 0));
+  }
+
+  update_coefs() {
+    this.angular_coef = (
+      (this.end_point.y - this.start_point.y) /
+      (this.end_point.x - this.start_point.x)
+    );
+
+    this.linear_coef = (
+      -this.angular_coef * this.start_point.x +
+      this.start_point.y
+    );
   }
 
   random_point() {
@@ -58,6 +103,8 @@ class Line {
         if (lines[p].contains_point(intersection)) {
           this.end_point.x = intersection.x;
           this.end_point.y = intersection.y;
+
+          this.active = false;
         }
       }
     }
@@ -81,8 +128,13 @@ class Line {
     );
   }
 
-  render() {
-    stroke(color(0, 0, 0));
+  render(custom_color) {
+    if (custom_color) {
+      stroke(custom_color);
+    } else {
+      stroke(color(0, 0, 0));
+    }
+
     strokeWeight(2);
 
     push();
@@ -97,6 +149,18 @@ class Line {
       this.end_point.x,
       this.end_point.y
     );
+
+    //ellipse(
+      //this.start_point.x,
+      //this.start_point.y,
+      //5
+    //);
+
+    //ellipse(
+      //this.end_point.x,
+      //this.end_point.y,
+      //5
+    //);
 
     pop();
   }
