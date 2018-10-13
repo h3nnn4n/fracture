@@ -5,8 +5,6 @@ class Line {
     this.set_mode(params);
     this.set_params(params);
 
-    //debugger;
-
     if (this.length < this.stop_length) {
       return;
     }
@@ -37,14 +35,11 @@ class Line {
   }
 
   set_mode(params) {
-    if (params.x1 && params.y1 && params.x2 && params.y2) {
-      console.log('fixed origin and end mode');
+    if (params.x1 != null && params.y1 != null && params.x2 != null && params.y2 != null) {
       this.mode = 2;
-    } else if (params.x1 && params.y1) {
-      console.log('fixed origin and length mode');
+    } else if (params.x1 != null && params.y1 != null) {
       this.mode = 1;
     } else {
-      console.log('random mode');
       this.mode = 0;
     }
   }
@@ -56,7 +51,7 @@ class Line {
     this.length = params.length;
     this.stop_length = params.stop_length || 5;
 
-    if (params.x1 && params.y1) {
+    if (this.mode == 1 || this.mode == 2) {
       this.start_point = createVector(
         params.x1,
         params.y1
@@ -65,7 +60,7 @@ class Line {
       this.start_point = createVector();
     }
 
-    if (params.x2 && params.y2) {
+    if (this.mode == 2) {
       this.end_point = createVector(
         params.x2,
         params.y2
@@ -80,11 +75,8 @@ class Line {
       return;
     }
 
-    this.start_point.x = x;
-    this.start_point.y = y;
-
     var random_direction = p5.Vector.random2D();
-    random_direction.setMag(length);
+    random_direction.setMag(this.length);
 
     this.end_point.set(p5.Vector.add(this.start_point, random_direction));
 
@@ -147,7 +139,7 @@ class Line {
           this.end_point.x = intersection.x;
           this.end_point.y = intersection.y;
 
-          this.render_intersection(intersection);
+          //this.render_intersection(intersection);
 
           this.active = false;
         }

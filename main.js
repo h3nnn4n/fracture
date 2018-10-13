@@ -15,35 +15,9 @@ function draw_box() {
   line(0, 0, width, 0);
   line(width, 0, width, height);
   line(0, height, width, height);
-
-  //lines.push(
-    //new Line({
-      //x1: width / 2,
-      //y1: height / 2,
-      //x2: width / 2 + 50,
-      //y2: height / 2 + 50,
-    //})
-  //);
-
-  //lines.push(
-    //new Line({
-      //x1: width / 2 + 50,
-      //y1: height / 2 + 50,
-      //length: random(
-        //parent.length + 5,
-        //parent.length - 10
-      //)
-    //})
-  //);
-
-  lines.push(
-    new Line()
-  );
 }
 
 function draw() {
-  return;
-
   for (var p in lines) {
     if (lines[p].active) {
       lines[p].active = false;
@@ -67,7 +41,6 @@ function spawn_line(parent) {
 }
 
 function mousePressed() {
-  return;
   reset();
 }
 
@@ -75,5 +48,11 @@ function reset() {
   background(color(255));
   lines = [];
   draw_box();
-  //lines.push(new Line(0, 0, 75));
+  lines.push(
+    new Line({
+      x1: 0,
+      y1: 0,
+      length: 75
+    })
+  );
 }
