@@ -18,54 +18,29 @@ function draw_box() {
   line(width, 0, width, height);
   line(0, height, width, height);
 
-  //strokeWeight(0.5);
-
-  //line(0, height / 2, width, height / 2);
-  //line(width / 2, 0, width / 2, height);
-
-  lines.push(new Line(0, 0, 25));
+  lines.push(new Line(0, 0, 75));
 }
 
 function draw() {
-  if (lines.length > 2000) {
-    return;
-  }
-
-  var changed = false;
-
   for (var p in lines) {
     if (lines[p].active) {
       lines[p].active = false;
-
-      changed = true;
-
-      lines.push(
-        new Line(
-          lines[p].end_point.x,
-          lines[p].end_point.y,
-          random(
-            lines[p].length + 2.5,
-            lines[p].length - 5.0
-          )
-        )
-      );
-
-      continue;
-
-      if (random() > 0.5) {
-        continue;
-      }
-
-      lines.push(
-        new Line(
-          lines[p].end_point.x,
-          lines[p].end_point.y,
-          random(
-            lines[p].length + 2.5,
-            lines[p].length - 5.0
-          )
-        )
-      );
+      spawn_line(lines[p]);
+      spawn_line(lines[p]);
+      spawn_line(lines[p]);
     }
   }
+}
+
+function spawn_line(parent) {
+  lines.push(
+    new Line(
+      parent.end_point.x,
+      parent.end_point.y,
+      random(
+        parent.length + 5,
+        parent.length - 10
+      )
+    )
+  );
 }

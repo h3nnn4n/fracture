@@ -34,6 +34,8 @@ class Line {
     }
 
     this.render();
+
+    this.check_bounds();
   }
 
   set_starting_point(x, y, length) {
@@ -190,5 +192,14 @@ class Line {
     );
 
     pop();
+  }
+
+  check_bounds() {
+    if (this.center.x < - width / 2 ||
+        this.center.x > width / 2 ||
+        this.center.y < - height / 2 ||
+        this.center.y > width / 2 ) {
+      this.active = false;
+    }
   }
 }
