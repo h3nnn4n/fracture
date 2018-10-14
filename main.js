@@ -65,10 +65,11 @@ function spawn_line(parent) {
     new Line({
       x1: parent.end_point.x,
       y1: parent.end_point.y,
-      length: random(
-        parent.length + 2.5,
-        parent.length - 4.5
-      )
+      length: parent.length
+      //length: random(
+        //parent.length + 5.5,
+        //parent.length - 5.5
+      //)
     })
   );
 }
@@ -82,7 +83,7 @@ function reset() {
   lines = [];
   draw_box();
 
-  for (var i = 0; i < 1; i++) {
+  for (var i = 0; i < 4; i++) {
     var x = random(-width / 3, width / 3);
     var y = random(-height / 3, height / 3);
     var n = random(1, 5);
@@ -91,7 +92,7 @@ function reset() {
         new Line({
           x1: x,
           y1: y,
-          length: random(25, 75)
+          length: random(5, 50)
         })
       );
     }

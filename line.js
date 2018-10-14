@@ -5,10 +5,6 @@ class Line {
     this.set_mode(params);
     this.set_params(params);
 
-    if (this.length < this.stop_length) {
-      return;
-    }
-
     this.bounds_start = createVector(-width / 3, -height / 3);
     this.bounds_end = createVector(width / 3, height / 3);
 
@@ -26,6 +22,11 @@ class Line {
     }
 
     this.update_length();
+
+    if (this.length < this.stop_length) {
+      this.active = false;
+      return;
+    }
 
     this.check_out_of_bounds();
 
@@ -50,7 +51,7 @@ class Line {
     this.params = params;
 
     this.length = params.length;
-    this.stop_length = params.stop_length || 2;
+    this.stop_length = params.stop_length || 5;
 
     if (typeof params.active === 'undefined') {
       this.active = true;
