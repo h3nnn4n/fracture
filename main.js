@@ -8,45 +8,13 @@ function setup() {
 }
 
 function draw_box() {
-  lines.push(
-    new Line({
-      x1: -width / 3,
-      y1: height / 3,
-      x2: -width / 3,
-      y2: -height / 3,
-      active: false
-    })
-  );
+  stroke(color(0, 0, 0));
+  strokeWeight(2);
 
-  lines.push(
-    new Line({
-      x1: width / 3,
-      y1: -height / 3,
-      x2: width / 3,
-      y2: height / 3,
-      active: false
-    })
-  );
-
-  lines.push(
-    new Line({
-      x1: width / 1,
-      y1: height / 3,
-      x2: -width / 1,
-      y2: height / 3,
-      active: false
-    })
-  );
-
-  lines.push(
-    new Line({
-      x1: -width / 1,
-      y1: -height / 3,
-      x2: width / 1,
-      y2: -height / 3,
-      active: false
-    })
-  );
+  line(0, 0, width, 0);
+  line(0, height, width, height);
+  line(0, 0, 0, height);
+  line(width, 0, width, height);
 }
 
 function draw() {
@@ -65,11 +33,10 @@ function spawn_line(parent) {
     new Line({
       x1: parent.end_point.x,
       y1: parent.end_point.y,
-      length: parent.length
-      //length: random(
-        //parent.length + 5.5,
-        //parent.length - 5.5
-      //)
+      length: Math.max(random(
+        parent.length + 3,
+        parent.length - 5
+      ), 5)
     })
   );
 }
@@ -92,7 +59,7 @@ function reset() {
         new Line({
           x1: x,
           y1: y,
-          length: random(5, 50)
+          length: random(25, 50)
         })
       );
     }
