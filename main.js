@@ -31,11 +31,12 @@ function draw() {
 function spawn_line(parent) {
   lines.push(
     new Line({
+      parent: parent,
       x1: parent.end_point.x,
       y1: parent.end_point.y,
       length: Math.max(random(
-        parent.length + 3,
-        parent.length - 5
+        parent.length + 5,
+        parent.length - 7.5
       ), 5)
     })
   );
@@ -50,7 +51,12 @@ function reset() {
   lines = [];
   draw_box();
 
+  colorMode(HSB);
   for (var i = 0; i < 4; i++) {
+    var col = color(
+      random(255),
+      random(80, 120),
+      random(80, 120));
     var x = random(-width / 3, width / 3);
     var y = random(-height / 3, height / 3);
     var n = random(1, 5);
@@ -59,9 +65,11 @@ function reset() {
         new Line({
           x1: x,
           y1: y,
-          length: random(25, 50)
+          length: random(25, 50),
+          custom_color: col
         })
       );
     }
   }
+  colorMode(RGB);
 }

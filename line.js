@@ -34,7 +34,7 @@ class Line {
       this.find_collisions();
     }
 
-    this.render();
+    this.render(this.custom_color);
   }
 
   set_mode(params) {
@@ -49,6 +49,14 @@ class Line {
 
   set_params(params) {
     this.params = params;
+
+    if (params.parent) {
+      this.custom_color = params.parent.custom_color;
+    }
+
+    if (params.custom_color) {
+      this.custom_color = params.custom_color;
+    }
 
     this.length = params.length;
     this.stop_length = params.stop_length || 5;
