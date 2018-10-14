@@ -46,12 +46,6 @@ function draw_box() {
 }
 
 function draw() {
-  //return;
-
-  if (lines.length > 5000) {
-    return;
-  }
-
   for (var p in lines) {
     if (lines[p].active) {
       lines[p].active = false;
@@ -85,12 +79,17 @@ function reset() {
   draw_box();
 
   for (var i = 0; i < 5; i++) {
-    lines.push(
-      new Line({
-        x1: 0,
-        y1: 0,
-        length: 75
-      })
-    );
+    var x = random(-width / 2, width / 2);
+    var y = random(-height / 2, height / 2);
+    var n = random(1, 5);
+    for (var j = 0; j < n; j++) {
+      lines.push(
+        new Line({
+          x1: x,
+          y1: y,
+          length: random(25, 75)
+        })
+      );
+    }
   }
 }

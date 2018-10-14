@@ -51,10 +51,9 @@ class Line {
 
   set_params(params) {
     this.params = params;
-    this.stop_length = params.stop_length || 2.5;
 
     this.length = params.length;
-    this.stop_length = params.stop_length || 5;
+    this.stop_length = params.stop_length || 2;
 
     if (this.mode == 1 || this.mode == 2) {
       this.start_point = createVector(
