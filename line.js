@@ -11,27 +11,32 @@ class Line {
 
     this.center = this.random_point();
 
-    this.bounds_start = createVector(-width / 2, -height / 2);
-    this.bounds_end = createVector(width / 2, height / 2);
+    this.bounds_start = createVector(-width / 3, -height / 3);
+    this.bounds_end = createVector(width / 3, height / 3);
 
     this.active = true;
 
     if (this.mode == 1) {
       this.set_starting_point();
       this.update_coefs();
+    } else if (this.mode == 2) {
+      this.update_coefs();
+      this.active = false;
     } else if (this.mode == 0) {
       this.linear_coef = random(-width / 2, width / 2);
       this.angular_coef = randomGaussian(0, 2);
       this.set_full_bounds();
     }
 
+    this.update_length();
+
+    this.check_out_of_bounds();
+
     if (lines.length > 0) {
       this.find_collisions();
     }
 
     this.render();
-
-    this.check_bounds();
   }
 
   set_mode(params) {
@@ -123,14 +128,16 @@ class Line {
     for (var p in lines) {
       var intersection = this.intersection_with(lines[p]);
 
-      //if (
-        //(this.start_point.x < intersection.x && intersection.x < this.center.x) ||
-        //(this.start_point.x > intersection.x && intersection.x > this.center.x)) {
-        //if (lines[p].contains_point(intersection)) {
-          //this.start_point.x = intersection.x;
-          //this.start_point.y = intersection.y;
-        //}
-      //}
+      if (this.mode != 1) {
+        if (
+          (this.start_point.x < intersection.x && intersection.x < this.center.x) ||
+          (this.start_point.x > intersection.x && intersection.x > this.center.x)) {
+          if (lines[p].contains_point(intersection)) {
+            this.start_point.x = intersection.x;
+            this.start_point.y = intersection.y;
+          }
+        }
+      }
 
       if (
         (this.end_point.x > intersection.x && intersection.x > this.center.x) ||
@@ -145,6 +152,14 @@ class Line {
         }
       }
     }
+  }
+
+  update_length() {
+    if (this.mode == 1) {
+      return;
+    }
+
+    this.length = this.start_point.dist(this.end_point);
   }
 
   contains_point(pos) {
@@ -224,7 +239,7 @@ class Line {
     pop();
   }
 
-  check_bounds() {
+  check_out_of_bounds() {
     if (this.center.x < - width / 2 ||
         this.center.x > width / 2 ||
         this.center.y < - height / 2 ||
