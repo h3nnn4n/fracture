@@ -13,7 +13,8 @@ function draw_box() {
       x1: -width / 3,
       y1: height / 3,
       x2: -width / 3,
-      y2: -height / 3
+      y2: -height / 3,
+      active: false
     })
   );
 
@@ -22,25 +23,28 @@ function draw_box() {
       x1: width / 3,
       y1: -height / 3,
       x2: width / 3,
-      y2: height / 3
+      y2: height / 3,
+      active: false
     })
   );
 
   lines.push(
     new Line({
-      x1: width / 3,
+      x1: width / 1,
       y1: height / 3,
-      x2: -width / 3,
-      y2: height / 3
+      x2: -width / 1,
+      y2: height / 3,
+      active: false
     })
   );
 
   lines.push(
     new Line({
-      x1: -width / 3,
+      x1: -width / 1,
       y1: -height / 3,
-      x2: width / 3,
-      y2: -height / 3
+      x2: width / 1,
+      y2: -height / 3,
+      active: false
     })
   );
 }
@@ -78,9 +82,9 @@ function reset() {
   lines = [];
   draw_box();
 
-  for (var i = 0; i < 5; i++) {
-    var x = random(-width / 2, width / 2);
-    var y = random(-height / 2, height / 2);
+  for (var i = 0; i < 1; i++) {
+    var x = random(-width / 3, width / 3);
+    var y = random(-height / 3, height / 3);
     var n = random(1, 5);
     for (var j = 0; j < n; j++) {
       lines.push(

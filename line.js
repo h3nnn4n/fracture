@@ -9,19 +9,16 @@ class Line {
       return;
     }
 
-    this.center = this.random_point();
-
     this.bounds_start = createVector(-width / 3, -height / 3);
     this.bounds_end = createVector(width / 3, height / 3);
-
-    this.active = true;
 
     if (this.mode == 1) {
       this.set_starting_point();
       this.update_coefs();
     } else if (this.mode == 2) {
       this.update_coefs();
-      this.active = false;
+      this.center.set(this.start_point);
+      this.center.lerp(this.end_point, 0.00001);
     } else if (this.mode == 0) {
       this.linear_coef = random(-width / 2, width / 2);
       this.angular_coef = randomGaussian(0, 2);
@@ -55,6 +52,12 @@ class Line {
     this.length = params.length;
     this.stop_length = params.stop_length || 2;
 
+    if (typeof params.active === 'undefined') {
+      this.active = true;
+    } else {
+      this.active = params.active;
+    }
+
     if (this.mode == 1 || this.mode == 2) {
       this.start_point = createVector(
         params.x1,
@@ -69,9 +72,12 @@ class Line {
         params.x2,
         params.y2
       );
+
     } else {
       this.end_point = createVector();
     }
+
+    this.center = createVector();
   }
 
   set_starting_point() {
@@ -85,9 +91,7 @@ class Line {
     this.end_point.set(p5.Vector.add(this.start_point, random_direction));
 
     this.center.set(this.start_point);
-    this.center.lerp(this.end_point, 0.1);
-
-    //this.render(color(255, 0, 0));
+    this.center.lerp(this.end_point, 0.00001);
   }
 
   update_coefs() {
@@ -127,26 +131,23 @@ class Line {
     for (var p in lines) {
       var intersection = this.intersection_with(lines[p]);
 
-      if (this.mode != 1) {
+      if (this.mode == 0) {
         if (
           (this.start_point.x < intersection.x && intersection.x < this.center.x) ||
           (this.start_point.x > intersection.x && intersection.x > this.center.x)) {
           if (lines[p].contains_point(intersection)) {
             this.start_point.x = intersection.x;
             this.start_point.y = intersection.y;
+            this.active = false;
           }
         }
       }
 
-      if (
-        (this.end_point.x > intersection.x && intersection.x > this.center.x) ||
-        (this.end_point.x < intersection.x && intersection.x < this.center.x)) {
+      if ((this.end_point.x > intersection.x && intersection.x > this.center.x) ||
+          (this.end_point.x < intersection.x && intersection.x < this.center.x)) {
         if (lines[p].contains_point(intersection)) {
           this.end_point.x = intersection.x;
           this.end_point.y = intersection.y;
-
-          //this.render_intersection(intersection);
-
           this.active = false;
         }
       }
@@ -204,30 +205,24 @@ class Line {
       this.end_point.y
     );
 
-    //ellipse(
-      //this.start_point.x,
-      //this.start_point.y,
-      //5
-    //);
-
-    //ellipse(
-      //this.end_point.x,
-      //this.end_point.y,
-      //5
-    //);
-
     pop();
   }
 
-  render_intersection(pos) {
+  render_intersection(pos, custom_color) {
+    if (custom_color) {
+      stroke(custom_color);
+      fill(custom_color);
+    } else {
+      stroke(color(255, 0, 0));
+      fill(color(255, 0, 0));
+    }
+
     push();
     translate(
       width / 2,
       height / 2
     );
 
-    fill(color(255, 0, 0));
-    stroke(color(255, 0, 0));
     ellipse(
       pos.x,
       pos.y,
