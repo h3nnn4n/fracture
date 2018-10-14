@@ -35,8 +35,8 @@ function spawn_line(parent) {
       x1: parent.end_point.x,
       y1: parent.end_point.y,
       length: Math.max(random(
-        parent.length + 5,
-        parent.length - 7.5
+        parent.length + 4.0,
+        parent.length - 6.0
       ), 5)
     })
   );
@@ -50,6 +50,14 @@ function reset() {
   background(color(255));
   lines = [];
   draw_box();
+
+  for (var i = 0; i < 3; i++) {
+    lines.push(
+      new Line({
+        active: false
+      })
+    );
+  }
 
   colorMode(HSB);
   for (var i = 0; i < 4; i++) {
