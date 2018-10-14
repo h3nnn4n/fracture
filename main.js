@@ -55,8 +55,9 @@ function draw() {
   for (var p in lines) {
     if (lines[p].active) {
       lines[p].active = false;
-      spawn_line(lines[p]);
-      spawn_line(lines[p]);
+      for (var i = 0; i < 2; i++) {
+        spawn_line(lines[p]);
+      }
     }
   }
 }
@@ -82,11 +83,14 @@ function reset() {
   background(color(255));
   lines = [];
   draw_box();
-  lines.push(
-    new Line({
-      x1: 0,
-      y1: 0,
-      length: 75
-    })
-  );
+
+  for (var i = 0; i < 5; i++) {
+    lines.push(
+      new Line({
+        x1: 0,
+        y1: 0,
+        length: 75
+      })
+    );
+  }
 }
