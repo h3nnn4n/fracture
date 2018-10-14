@@ -186,8 +186,7 @@ class Line {
     if (custom_color) {
       stroke(custom_color);
     } else {
-      //stroke(color(0, 0, 0));
-      stroke(color(0, 0, 0, 125));
+      stroke(color(0, 0, 0));
     }
 
     strokeWeight(1);
