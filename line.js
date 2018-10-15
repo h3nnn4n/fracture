@@ -5,8 +5,8 @@ class Line {
     this.set_mode(params);
     this.set_params(params);
 
-    this.bounds_start = createVector(-width / 3, -height / 3);
-    this.bounds_end = createVector(width / 3, height / 3);
+    this.bounds_start = createVector(-width / 2, -height / 2);
+    this.bounds_end = createVector(width / 2, height / 2);
 
     if (this.mode == 1) {
       this.set_starting_point();
