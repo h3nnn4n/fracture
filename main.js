@@ -37,7 +37,7 @@ function spawn_line(parent) {
       length: Math.max(random(
         parent.length + 4.0,
         parent.length - 6.0
-      ), 5)
+      ), 7.5)
     })
   );
 }
@@ -64,7 +64,8 @@ function reset() {
     var col = color(
       random(255),
       random(80, 120),
-      random(80, 120));
+      random(80, 120),
+      0.5);
     var x = random(-width / 3, width / 3);
     var y = random(-height / 3, height / 3);
     var n = random(1, 5);
