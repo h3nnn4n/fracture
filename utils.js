@@ -17,17 +17,24 @@ function spawn_line(parent) {
       length: Math.max(random(
         parent.length + 4.0,
         parent.length - 6.0
-      ), 7.5)
+      ), 7.5),
+      custom_color: getPixData(
+        parent.end_point.x + width / 2,
+        parent.end_point.y + height / 2
+      )
     })
   );
 }
 
 function reset() {
+  var i, j;
+
   background(color(255));
+  //image(img, 0, 0);
   lines = [];
   draw_box();
 
-  for (var i = 0; i < 4; i++) {
+  for (i = 0; i < 0; i++) {
     lines.push(
       new Line({
         active: false
@@ -36,16 +43,12 @@ function reset() {
   }
 
   colorMode(HSB);
-  for (var i = 0; i < 4; i++) {
-    var col = color(
-      random(255),
-      random(80, 120),
-      random(80, 120),
-      0.5);
+  for (i = 0; i < 4; i++) {
     var x = random(-width / 3, width / 3);
     var y = random(-height / 3, height / 3);
-    var n = random(1, 5);
-    for (var j = 0; j < n; j++) {
+    var col = getPixData(x + width / 3, y + height / 3);
+    var n = random(2, 5);
+    for (j = 0; j < n; j++) {
       lines.push(
         new Line({
           x1: x,
@@ -57,4 +60,24 @@ function reset() {
     }
   }
   colorMode(RGB);
+}
+
+function getPixData(x, y){
+  x = floor(x);
+  y = floor(y);
+
+  var d = img._pixelDensity;
+  var c;
+
+  idx = 4 * ((y * d) * img.width * d + (x * d));
+
+  c = color(
+    img.pixels[idx],
+    img.pixels[idx+1],
+    img.pixels[idx+2],
+    img.pixels[idx+3]
+  );
+
+  //debugger;
+  return c;
 }

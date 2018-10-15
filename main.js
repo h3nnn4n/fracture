@@ -1,6 +1,9 @@
 var lines = [];
+var img;
 
-var count = 0;
+function preload() {
+  img = loadImage('img.jpg');
+}
 
 function setup() {
   var canvas = createCanvas(700, 600);
@@ -10,6 +13,8 @@ function setup() {
 }
 
 function draw() {
+  img.loadPixels();
+
   for (var p in lines) {
     if (lines[p].active) {
       lines[p].active = false;
