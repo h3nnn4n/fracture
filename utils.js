@@ -27,15 +27,13 @@ function reset() {
   lines = [];
   draw_box();
 
-  for (var i = 0; i < 50; i++) {
+  for (var i = 0; i < 4; i++) {
     lines.push(
       new Line({
         active: false
       })
     );
   }
-
-  return;
 
   colorMode(HSB);
   for (var i = 0; i < 4; i++) {
@@ -50,10 +48,10 @@ function reset() {
     for (var j = 0; j < n; j++) {
       lines.push(
         new Line({
-          x1: 0,
-          y1: 0,
+          x1: x,
+          y1: y,
           length: random(25, 50),
-          //custom_color: col
+          custom_color: col
         })
       );
     }
